@@ -1,0 +1,50 @@
+schema_version: 1
+
+context:
+  version: "0.1.0"
+
+package:
+  name: eotools
+  version: ${{ version }}
+
+source:
+  url: https://github.com/hygeos/eotools/archive/refs/tags/v${{ version }}.tar.gz
+  sha256: c745a8b5853b74bc2e47147d72b099eafb9afe976162aec04ebe7aa2f6a996d1
+
+build:
+  number: 1
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - pip
+    - poetry-core >=1
+  run:
+    - python >=${{ python_min }}
+    - cf-xarray
+    - hygeos-core  # defined as optional dependency in pyproject.toml
+    - pint-xarray
+    - xarray
+    - xlrd
+
+tests:
+  - python:
+      imports:
+        - eotools
+      pip_check: true
+      python_version:
+        - ${{ python_min }}.*
+        - "*"
+
+about:
+  summary: A collection of tools and modules for building processing chains.
+  license: Apache-2.0
+  license_file: LICENSE
+  homepage: https://github.com/hygeos/eotools
+
+extra:
+  recipe-maintainers:
+    - fsteinmetz
+    - danschef
