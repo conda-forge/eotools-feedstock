@@ -9,6 +9,10 @@ Package license: Apache-2.0
 
 Summary: A collection of tools and modules for building processing chains.
 
+Development: https://github.com/hygeos/eotools
+
+Documentation: https://hygeos.github.io/eotools/
+
 Current build status
 ====================
 

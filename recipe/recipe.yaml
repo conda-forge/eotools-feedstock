@@ -1,38 +1,49 @@
 schema_version: 1
 
 context:
-  version: "0.1.0"
+  version: "1.0.0"
 
 package:
   name: eotools
   version: ${{ version }}
 
 source:
-  url: https://github.com/hygeos/eotools/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: c745a8b5853b74bc2e47147d72b099eafb9afe976162aec04ebe7aa2f6a996d1
+  url: https://pypi.org/packages/source/e/eotools/eotools-${{ version }}.tar.gz
+  sha256: 0f4e11876e233eb0eb0219063e81a6719ddda0ca4cd697db9d5a0c69f34954e9
 
 build:
-  number: 1
+  number: 0
   noarch: python
-  script: ${{ PYTHON }} -m pip install . -vv
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
     - python ${{ python_min }}.*
     - pip
-    - poetry-core >=1
+    - poetry-core >=2.0
   run:
     - python >=${{ python_min }}
-    - cf-xarray
-    - hygeos-core  # defined as optional dependency in pyproject.toml
-    - pint-xarray
+    - numpy
+    - pandas
+    - scipy
+    - dask-core
     - xarray
+    - cf_xarray
+    - pint-xarray
+    - pyhdf
+    - openpyxl
     - xlrd
+    - hygeos-core >=2.0.2,<3
+    - luts >=1,<2
+  run_constraints:
+    # optional dependency (pyproject extra "eoread")
+    - eoread >=2,<3
 
 tests:
   - python:
       imports:
         - eotools
+        - eotools.rayleigh
       pip_check: true
       python_version:
         - ${{ python_min }}.*
@@ -41,8 +52,12 @@ tests:
 about:
   summary: A collection of tools and modules for building processing chains.
   license: Apache-2.0
-  license_file: LICENSE
+  license_file:
+    - LICENSE
+    - NOTICE
   homepage: https://github.com/hygeos/eotools
+  documentation: https://hygeos.github.io/eotools/
+  repository: https://github.com/hygeos/eotools
 
 extra:
   recipe-maintainers:
